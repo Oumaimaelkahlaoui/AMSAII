@@ -1,0 +1,3875 @@
+@import "tailwindcss";
+
+
+/* ==========================================================================
+   RESET GLOBAL & NORMES D'OVERFLOW
+   ========================================================================== */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  background-color: #FDFBF7; /* au lieu de #000000 */
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   1. NAVBAR (AMSAII)
+   ========================================================================== */
+.amsaii-home .header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 clamp(1.5rem, 4vw, 4rem);
+  z-index: 100;
+  background-color: #FFFFFF;
+  border-bottom-left-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.04);
+}
+
+.amsaii-home .logo {
+  font-family: var(--font-family-heading, serif);
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #1A1A1A;
+  flex-shrink: 0;
+}
+
+.amsaii-home .nav-links {
+  display: flex;
+  gap: clamp(1rem, 2vw, 2.2rem);
+  align-items: center;
+}
+
+.amsaii-home .nav-link {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #2C2C2C;
+  opacity: 0.85;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+}
+
+.amsaii-home .nav-link:hover {
+  opacity: 1;
+}
+
+.amsaii-home .header-btn {
+  background-color: #1A1A1A;
+  color: #FFFFFF;
+  padding: 0.75rem 1.6rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.amsaii-home .header-btn:hover {
+  background-color: #333333;
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   2. HERO SECTION FULLSCREEN (Fixed + Effet de zoom/assombrissement au scroll)
+   ========================================================================== */
+.amsaii-home .hero {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* Espaceur : pousse le contenu d'une hauteur d'écran avant que la section 2 arrive */
+.amsaii-home .hero-spacer {
+  height: 100vh;
+  width: 100%;
+  pointer-events: none;
+}
+
+.amsaii-home .hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 1;
+  transform: scale(calc(1 + var(--scroll-p, 0) * 0.08));
+  filter: brightness(calc(0.85 - var(--scroll-p, 0) * 0.4));
+  transition: transform 0.1s linear, filter 0.1s linear;
+}
+
+.amsaii-home .hero-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, calc(0.15 + var(--scroll-p, 0) * 0.55));
+  z-index: 2;
+  pointer-events: none;
+  transition: background-color 0.1s linear;
+}
+
+/* ==========================================================================
+   3. TITRE & DESCRIPTION (EN BAS À GAUCHE)
+   ========================================================================== */
+.amsaii-home .hero-content {
+  position: absolute;
+  bottom: clamp(2.5rem, 6vh, 4.5rem);
+  left: clamp(1.5rem, 5vw, 5rem);
+  z-index: 10;
+  max-width: clamp(300px, 45vw, 520px);
+  color: #FFFFFF;
+  pointer-events: auto;
+  transition: transform 0.8s ease, opacity 0.8s ease;
+}
+
+.amsaii-home .hero-title {
+  font-family: var(--font-family-heading, serif);
+  font-size: clamp(3.5rem, 8vw, 8rem);
+  font-weight: 300;
+  line-height: 0.95;
+  margin: 0 0 1.25rem 0;
+  letter-spacing: -0.03em;
+  color: #FFFFFF;
+  white-space: nowrap;
+}
+/* Titre Hero : mots qui défilent verticalement en boucle (slide + fade) */
+.amsaii-home .hero-title {
+  overflow: visible;
+}
+
+.amsaii-home .hero-cycle {
+  display: block;
+  overflow: hidden;
+  height: 1em;
+  line-height: 1;
+}
+
+.amsaii-home .hero-cycle-track {
+  display: flex;
+  flex-direction: column;
+  animation: heroCycle 7s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+.amsaii-home .hero-cycle-word {
+  display: block;
+  height: 1em;
+  line-height: 1;
+}
+
+@keyframes heroCycle {
+  0%, 38%  { transform: translateY(0); }
+  46%, 84% { transform: translateY(-1em); }
+  92%, 100% { transform: translateY(-2em); }
+}
+
+.amsaii-home .hero-title-brand {
+  color: #C4924A;
+  font-style: italic;
+}
+
+/* Léger mouvement de parallaxe au scroll (texte + titre) */
+.amsaii-home .hero-content {
+  transform: translateY(calc(var(--scroll-p, 0) * -60px));
+  opacity: calc(1 - var(--scroll-p, 0) * 0.6);
+  transition: transform 0.1s linear, opacity 0.1s linear;
+}
+
+.amsaii-home .hero-description {
+  font-size: clamp(0.875rem, 1.1vw, 1.05rem);
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.92);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ==========================================================================
+   4. CERCLE SCROLL DOWN (EN BAS À DROITE)
+   ========================================================================== */
+.amsaii-home .scroll-down-wrapper {
+  position: absolute;
+  right: clamp(1.5rem, 5vw, 5rem);
+  bottom: clamp(2.5rem, 6vh, 4.5rem);
+  z-index: 10;
+  width: clamp(85px, 8vw, 110px);
+  height: clamp(85px, 8vw, 110px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-size: clamp(0.6rem, 0.75vw, 0.7rem);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  text-align: center;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(4px);
+  transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+  user-select: none;
+}
+
+.amsaii-home .scroll-down-wrapper:hover {
+  transform: scale(1.05);
+  border-color: #FFFFFF;
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+/* ==========================================================================
+   5. RESPONSIVE HERO NAVBAR
+   ========================================================================== */
+@media (max-width: 968px) {
+  .amsaii-home .nav-links {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   SECTION 2 & TRANSITION STYLE CABIN (Panneau glissant par-dessus le Hero fixe)
+   ========================================================================== */
+.amsaii-home .intro-section {
+  position: relative;
+  background-color: #f8f7f3;
+  border-top-left-radius: 60px;
+  border-top-right-radius: 60px;
+  z-index: 10;
+  min-height: 100vh;
+  padding: 120px clamp(1.5rem, 6vw, 6rem) 5rem;
+  box-sizing: border-box;
+  box-shadow: 0 -25px 50px rgba(0, 0, 0, 0.35);
+}
+
+.amsaii-home .intro-inner-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Bloc Intro & Titre Éditorial */
+.amsaii-home .intro-header-block {
+  text-align: center;
+  max-width: 850px;
+  margin: 0 auto 5rem auto;
+}
+
+.amsaii-home .intro-tag {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: #8C8C8C;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.amsaii-home .intro-main-title {
+  font-family: var(--font-family-heading, serif);
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
+  font-weight: 300;
+  color: #1A1A1A;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+/* Grille de services — 3 colonnes, plusieurs lignes possibles (6 items) */
+.amsaii-home .services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem 3rem;
+  margin-bottom: 4rem;
+  position: relative;
+}
+
+/* Séparateur vertical : uniquement entre colonnes (pas fin de ligne) */
+.amsaii-home .services-grid .service-column:not(:nth-child(3n))::after {
+  content: '';
+  position: absolute;
+  top: 10%;
+  bottom: 10%;
+  right: -1.5rem;
+  width: 1px;
+  background-color: #E6E2DA;
+}
+
+.amsaii-home .services-grid .service-column:nth-child(3n)::after {
+  display: none;
+}
+
+/* Espacement supplémentaire pour la 2e ligne (items 4, 5, 6...) */
+.amsaii-home .services-grid .service-column:nth-child(n+4) {
+  margin-top: 2.5rem;
+}
+
+.amsaii-home .service-column {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  padding: 0 1rem;
+}
+
+/* Cercle d'icône minimaliste — hover + actif unifiés (plus de saccade) */
+.amsaii-home .service-icon-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #F4F1EA;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+  transform: translateY(0) scale(1);
+  transition: background-color 0.35s ease,
+              transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.35s ease;
+}
+
+.amsaii-home .service-icon-circle svg {
+  color: #1A1A1A;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* Petit mouvement au survol de la souris */
+.amsaii-home .service-column:hover .service-icon-circle svg {
+  animation: iconWiggle 0.5s ease;
+}
+
+@keyframes iconWiggle {
+  0%   { transform: rotate(0deg) scale(1); }
+  25%  { transform: rotate(-8deg) scale(1.05); }
+  50%  { transform: rotate(6deg) scale(1.08); }
+  75%  { transform: rotate(-4deg) scale(1.05); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+.amsaii-home .service-column:hover .service-icon-circle {
+  transform: translateY(-4px);
+}
+
+/* État actif au clic — cercle rempli, icône blanche */
+.amsaii-home .service-column.is-active .service-icon-circle {
+  background-color: #C4924A;
+  transform: translateY(-4px) scale(1.15);
+  box-shadow: 0 10px 22px rgba(196, 146, 74, 0.35);
+}
+
+.amsaii-home .service-column.is-active .service-icon-circle svg {
+  color: #FFFFFF;
+}
+
+.amsaii-home .service-heading {
+  transition: color 0.3s ease;
+    font-size: 1.05rem;   /* ajoute cette ligne (pas définie avant, donc taille par défaut du navigateur) */
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  color: #1A1A1A;
+}
+
+.amsaii-home .service-column.is-active .service-heading {
+  color: #C4924A;
+}
+
+.amsaii-home .service-text {
+  font-size: 1rem;
+  font-weight: 300;
+  color: #66635D;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 320px;
+  transition: color 0.3s ease;
+}
+
+/* CTA Bouton de la section */
+.amsaii-home .main-cta-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.amsaii-home .main-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: #1A1A1A;
+  color: #FFFFFF;
+  padding: 0.9rem 2rem;
+  border-radius: 9999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.amsaii-home .main-cta-btn:hover {
+  background-color: #333333;
+  transform: translateY(-2px);
+}
+
+.amsaii-home .main-cta-arrow {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+/* ==========================================================================
+   BOUTON BACK TO TOP FLOTTANT DISCRET
+   ========================================================================== */
+.amsaii-home .back-to-top-btn {
+  position: fixed;
+  right: 2rem;
+  bottom: 2rem;
+  z-index: 99;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: #1A1A1A;
+  color: #FFFFFF;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.amsaii-home .back-to-top-btn:hover {
+  transform: scale(1.1);
+  background-color: #333333;
+}
+
+/* ==========================================================================
+   RESPONSIVE SECTION 2
+   ========================================================================== */
+@media (max-width: 968px) {
+  .amsaii-home .intro-section {
+    border-radius: 35px 35px 0 0;
+    padding-top: 90px;
+  }
+
+  .amsaii-home .services-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .amsaii-home .services-grid .service-column::after {
+    display: none;
+  }
+
+  .amsaii-home .services-grid .service-column:nth-child(n+2) {
+    margin-top: 0;
+  }
+
+  .amsaii-home .service-column {
+    align-items: center;
+    text-align: center;
+    padding: 0;
+  }
+
+  .amsaii-home .service-text {
+    max-width: 400px;
+  }
+}
+
+/* ==========================================================================
+   SECTION 3 — MOSAÏQUE ÉPINGLÉE AVEC ROTATION INDIVIDUELLE AU SCROLL
+   ========================================================================== */
+.amsaii-home .mosaic-pin-wrapper {
+  position: relative;
+  height: 250vh;
+  z-index: 10;
+    background-color: #f8f7f3; /* ajoute ça */
+
+}
+
+.amsaii-home .mosaic-sticky {
+  position: absolute;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #f8f7f3;
+  z-index: 10;
+}
+
+.amsaii-home .mosaic-card {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  height: 70vh;
+  margin: 0 auto;
+  border-radius: 40px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.amsaii-home .gallery-mosaic {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  transform-origin: center;
+  transform: rotate(calc(var(--mosaic-p, 0) * -8deg))
+             scale(calc(1 + var(--mosaic-p, 0) * 0.15));
+  transition: transform 0.1s linear;
+  will-change: transform;
+}
+
+.amsaii-home .gallery-item {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #ddd;
+}
+
+.amsaii-home .gallery-item img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.amsaii-home .gallery-item:hover img {
+  transform: scale(1.06);
+}
+
+.amsaii-home .gallery-item--big {
+  grid-column: 2 / span 2;
+  grid-row: 1 / span 2;
+}
+
+.amsaii-home .gallery-item--wide  { grid-column: span 2; }
+.amsaii-home .gallery-item--tall  { grid-row: span 2; }
+
+.amsaii-home .gallery-caption {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  text-align: center;
+  color: #FFFFFF;
+  pointer-events: none;
+  opacity: var(--mosaic-p, 0);
+  transition: opacity 0.1s linear;
+}
+
+.amsaii-home .gallery-caption h2 {
+  font-family: var(--font-family-heading, serif);
+  font-size: clamp(2.2rem, 5vw, 4.2rem);
+  font-weight: 300;
+  line-height: 1.1;
+  margin: 0;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+}
+
+.amsaii-home .gallery-contact-card {
+  position: absolute;
+  right: 2rem;
+  bottom: 2rem;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(6px);
+  padding: 0.65rem 1.25rem 0.65rem 0.65rem;
+  border-radius: 9999px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  opacity: var(--mosaic-p, 0);
+  transform: translateY(calc((1 - var(--mosaic-p, 0)) * 20px));
+  transition: opacity 0.1s linear, transform 0.1s linear;
+}
+
+.amsaii-home .gallery-contact-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.amsaii-home .gallery-contact-text {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #1A1A1A;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .amsaii-home .mosaic-pin-wrapper { height: 180vh; }
+  .amsaii-home .mosaic-card { height: 80vh; }
+  .amsaii-home .gallery-mosaic {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+  }
+  .amsaii-home .gallery-item--big,
+  .amsaii-home .gallery-item--wide { grid-column: span 2; }
+}
+
+/* ==========================================================================
+   SECTION 4 — FONCTIONNALITÉS ALTERNÉES & STYLE "CABIN"
+   ========================================================================== */
+.amsaii-home .features-section {
+  position: relative;
+  z-index: 10;
+  background-color: #FDFBF7;
+  padding: 7rem clamp(1.5rem, 6vw, 6rem);
+}
+
+.amsaii-home .features-header {
+  text-align: center;
+  max-width: 850px;
+  margin: 0 auto 5rem auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.amsaii-home .features-tag {
+  display: block;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: #8C8C8C;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.amsaii-home .features-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 400;
+  color: #1A1A1A;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.01em;
+  text-align: center;
+  width: 100%;
+}
+
+.amsaii-home .features-subtitle {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(0.95rem, 1.1vw, 1.15rem);
+  font-weight: 300;
+  color: #66635D;
+  line-height: 1.6;
+  margin: 0 auto;
+  max-width: 550px;
+  text-align: center;
+}
+
+/* Ligne image + texte (Disposition "Cabin") */
+.amsaii-home .feature-row {
+  display: flex;
+  align-items: center;
+  gap: clamp(3rem, 6vw, 7rem);
+  max-width: 1200px;
+  margin: 0 auto 7rem auto;
+}
+
+.amsaii-home .feature-row:last-child {
+  margin-bottom: 0;
+}
+
+.amsaii-home .feature-row--reverse {
+  flex-direction: row-reverse;
+}
+
+/* Conteneur image avec grands coins arrondis */
+.amsaii-home .feature-image-wrap {
+  position: relative;
+  flex: 1 1 52%;
+  border-radius: 36px;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
+}
+
+.amsaii-home .feature-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.amsaii-home .feature-image-wrap:hover img {
+  transform: scale(1.04);
+}
+
+/* Badge circulaire blanc positionné en bas */
+.amsaii-home .feature-badge {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  z-index: 2;
+  transition: transform 0.3s ease;
+}
+
+.amsaii-home .feature-image-wrap:hover .feature-badge {
+  transform: scale(1.06);
+}
+
+.amsaii-home .feature-row--reverse .feature-badge {
+  right: auto;
+  left: 1.5rem;
+}
+
+.amsaii-home .feature-badge svg {
+  width: 26px;
+  height: 26px;
+  color: #1A1A1A;
+  stroke-width: 1.5;
+}
+
+/* Contenu texte aligné */
+.amsaii-home .feature-content {
+  flex: 1 1 48%;
+}
+
+.amsaii-home .feature-row .feature-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  font-weight: 300;
+  color: #1A1A1A;
+  margin: 0 0 1.25rem 0;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.amsaii-home .feature-text {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(0.95rem, 1.1vw, 1.15rem);
+  font-weight: 300;
+  color: #55524C;
+  line-height: 1.7;
+  margin: 0;
+  max-width: 440px;
+}
+
+/* Adaptation Responsive */
+@media (max-width: 900px) {
+  .amsaii-home .feature-row,
+  .amsaii-home .feature-row--reverse {
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+  .amsaii-home .feature-image-wrap,
+  .amsaii-home .feature-content {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+  .amsaii-home .feature-text {
+    max-width: 100%;
+  }
+}
+
+/* ==========================================================================
+   SECTION STATISTIQUES / CHIFFRES CLÉS (Style Inspiré)
+   ========================================================================== */
+.amsaii-home .stats-section {
+  padding: 6rem 2rem;
+  background-color: #FDFBF7;
+  position: relative;
+  z-index: 10;
+}
+
+.amsaii-home .stats-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid #E5E0D8;
+  border-bottom: 1px solid #E5E0D8;
+}
+
+.amsaii-home .stat-card {
+  padding: 4rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+}
+
+/* Séparateurs verticaux entre les colonnes (sauf la dernière) */
+.amsaii-home .stat-card:not(:last-child) {
+  border-right: 1px solid #E5E0D8;
+}
+
+.amsaii-home .stat-number-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.amsaii-home .stat-number {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(3.2rem, 4.5vw, 4.5rem);
+  font-weight: 400;
+  color: #1A1A1A;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.amsaii-home .stat-suffix {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+/* Petit badge arrondi noir (ex: 120%) */
+.amsaii-home .stat-badge {
+  background-color: #1A1A1A;
+  color: #FFFFFF;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.35rem 0.65rem;
+  border-radius: 50px;
+  letter-spacing: 0.05em;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.amsaii-home .stat-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: #1A1A1A;
+  margin: 1.25rem 0 0.75rem 0;
+}
+
+.amsaii-home .stat-text {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: #66635D;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Responsive pour les écrans mobiles et tablettes */
+@media (max-width: 968px) {
+  .amsaii-home .stats-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .amsaii-home .stat-card:not(:last-child) {
+    border-right: none;
+    border-bottom: 1px solid #E5E0D8;
+  }
+  
+  .amsaii-home .stat-card {
+    padding: 3rem 1.5rem;
+  }
+}
+
+/* Animation douce pour les badges avec icônes similaires à la vidéo */
+@keyframes floatBadge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.floating-badge {
+  animation: floatBadge 4s ease-in-out infinite;
+  background: white;
+  border-radius: 50%;
+  padding: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =========================================================
+   CONTACT SECTION - IMMERSIVE
+   ========================================================= */
+/* =========================================================
+   CONTACT SECTION - DESIGN IDENTIQUE À LA MAQUETTE
+   ========================================================= */
+/* =========================================================
+   CONTACT SECTION - DESIGN CABIN
+*  ========================================================= */
+
+
+
+/* =========================================================
+   CONTACT SECTION - DESIGN CABIN + ANIMATIONS SCROLL
+   ========================================================= */
+
+.amsaii-home.contact-section {
+  width: 100%;
+  padding: 5rem clamp(1rem, 4vw, 4rem) 6rem;
+  background-color: #FDFBF7;
+  position: relative;
+  z-index: 10;
+}
+
+.amsaii-home .contact-container {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  min-height: 720px;
+  margin: 0 auto;
+  border-radius: 48px;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px 50px 80px 60px;
+  box-sizing: border-box;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+}
+
+/* Image de fond chalet */
+.amsaii-home .contact-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+  border-radius: 48px;
+}
+
+/* Overlay sombre subtil */
+.amsaii-home .contact-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.32);
+  z-index: 2;
+  border-radius: 48px;
+}
+
+/* Flèche pointillée décorative */
+.amsaii-home .contact-arrow-decoration {
+  position: absolute;
+  top: 48%;
+  left: 30%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.amsaii-home .contact-arrow-decoration path {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+}
+
+.amsaii-home .contact-arrow-decoration.is-visible path {
+  animation: drawContactArrow 2.2s ease-out forwards 0.3s;
+}
+
+@keyframes drawContactArrow {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Côté Gauche (Textes) */
+.amsaii-home .contact-content-left {
+  position: relative;
+  z-index: 3;
+  color: #ffffff;
+  max-width: 510px;
+  padding-right: 2rem;
+}
+
+.amsaii-home .contact-subtitle {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 1.25rem;
+  display: block;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.amsaii-home .contact-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.8rem, 5.5vw, 5rem);
+  line-height: 1.05;
+  font-weight: 300;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.amsaii-home .contact-title .word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.amsaii-home .contact-description {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(0.9rem, 1.1vw, 1.1rem);
+  line-height: 1.7;
+  font-weight: 300;
+  opacity: 0.92;
+  margin: 0;
+  max-width: 380px;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* Côté Droit (Carte Formulaire Blanche) */
+.amsaii-home .contact-form-card {
+  position: relative;
+  z-index: 3;
+  background: #ffffff;
+  width: 100%;
+  max-width: 400px;
+  padding: 45px 38px;
+  border-radius: 36px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
+}
+
+.amsaii-home .form-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.amsaii-home .form-header h3 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 2.2rem;
+  font-weight: 400;
+  color: #1A1A1A;
+  margin: 0 0 8px 0;
+}
+
+.amsaii-home .form-header p {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.9rem;
+  color: #8C8C8C;
+  margin: 0;
+}
+
+/* Champs du formulaire */
+.amsaii-home .contact-form .form-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.amsaii-home .contact-form input,
+.amsaii-home .contact-form select,
+.amsaii-home .contact-form textarea {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid #E8E4DE;
+  border-radius: 14px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.9rem;
+  background-color: #FAF9F6;
+  color: #1A1A1A;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.amsaii-home .contact-form input::placeholder,
+.amsaii-home .contact-form textarea::placeholder,
+.amsaii-home .contact-form select:invalid {
+  color: #A8A39A;
+}
+
+.amsaii-home .contact-form input:focus,
+.amsaii-home .contact-form select:focus,
+.amsaii-home .contact-form textarea:focus {
+  border-color: #1A1A1A;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.05);
+}
+
+.amsaii-home .contact-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Bouton de soumission */
+.amsaii-home .submit-btn {
+  width: 100%;
+  padding: 16px;
+  background-color: #1A1A1A;
+  color: #ffffff;
+  border: none;
+  border-radius: 14px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 14px;
+  letter-spacing: 0.02em;
+}
+
+.amsaii-home .submit-btn:hover {
+  background-color: #333333;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.amsaii-home .form-terms {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.75rem;
+  text-align: center;
+  color: #A8A39A;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Badge "Appelez-nous" en bas à droite (identique photo 2) */
+.amsaii-home .contact-call-badge {
+  position: absolute;
+  right: 2.5rem;
+  bottom: -26px;
+  left: auto;
+  transform: none;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: #FFFFFF;
+  padding: 0.65rem 1.5rem 0.65rem 0.65rem;
+  border-radius: 9999px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.amsaii-home .contact-call-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.amsaii-home .contact-call-text {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.9rem;
+  color: #1A1A1A;
+  white-space: nowrap;
+}
+
+.amsaii-home .contact-call-text strong {
+  font-weight: 700;
+}
+
+/* =========================================================
+   ANIMATIONS AU SCROLL (Texte + Flèche + Carte + Badge)
+   ========================================================= */
+
+/* État initial caché */
+.amsaii-home .contact-title.reveal-ready .word {
+  opacity: 0;
+  transform: translateY(110%);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.amsaii-home .contact-description.reveal-ready {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.amsaii-home .contact-form-card.reveal-ready {
+  opacity: 0;
+  transform: translateY(50px) scale(0.96);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.amsaii-home .contact-call-badge.reveal-ready {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* État visible (déclenché par IntersectionObserver) */
+.amsaii-home .contact-title.reveal-ready.is-visible .word:nth-child(1) { transition-delay: 0.1s; }
+.amsaii-home .contact-title.reveal-ready.is-visible .word:nth-child(2) { transition-delay: 0.22s; }
+.amsaii-home .contact-title.reveal-ready.is-visible .word:nth-child(3) { transition-delay: 0.34s; }
+
+.amsaii-home .contact-title.reveal-ready.is-visible .word,
+.amsaii-home .contact-description.reveal-ready.is-visible,
+.amsaii-home .contact-form-card.reveal-ready.is-visible,
+.amsaii-home .contact-call-badge.reveal-ready.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.amsaii-home .contact-description.reveal-ready.is-visible { transition-delay: 0.45s; }
+.amsaii-home .contact-form-card.reveal-ready.is-visible { transition-delay: 0.2s; }
+.amsaii-home .contact-call-badge.reveal-ready.is-visible { transition-delay: 0.7s; }
+
+/* Responsive */
+@media (max-width: 968px) {
+  .amsaii-home.contact-section {
+    padding: 4rem 1rem 5rem;
+  }
+  
+  .amsaii-home .contact-container {
+    flex-direction: column;
+    padding: 50px 28px 70px 28px;
+    gap: 40px;
+    border-radius: 36px;
+    min-height: auto;
+    overflow: hidden;
+  }
+  
+  .amsaii-home .contact-bg,
+  .amsaii-home .contact-overlay {
+    border-radius: 36px;
+  }
+  
+  .amsaii-home .contact-content-left {
+    text-align: center;
+    max-width: 100%;
+    padding-right: 0;
+  }
+  
+  .amsaii-home .contact-title {
+    font-size: 2.8rem;
+  }
+  
+  .amsaii-home .contact-description {
+    max-width: 100%;
+  }
+  
+  .amsaii-home .contact-form-card {
+    max-width: 100%;
+    padding: 35px 28px;
+    border-radius: 28px;
+  }
+  
+  .amsaii-home .contact-arrow-decoration {
+    display: none;
+  }
+  
+  .amsaii-home .contact-call-badge {
+    right: 1.5rem;
+    bottom: -22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .amsaii-home .contact-form .form-row {
+    flex-direction: column;
+    gap: 14px;
+  }
+  
+  .amsaii-home .contact-title {
+    font-size: 2.2rem;
+  }
+  
+  .amsaii-home .contact-container {
+    padding: 40px 20px 60px 20px;
+    border-radius: 28px;
+  }
+  
+  .amsaii-home .contact-call-badge {
+    right: 1rem;
+    padding: 0.5rem 1rem 0.5rem 0.5rem;
+  }
+  
+  .amsaii-home .contact-call-text {
+    font-size: 0.8rem;
+  }
+}
+/* ==========================================================================
+   FOOTER SECTION
+ /* ==========================================================================
+   FOOTER STYLE "CABIN"
+   ========================================================================== */
+.amsaii-home .footer-cabin-section {
+  position: relative;
+  background-color: #1A1A1A;
+  color: #FFFFFF;
+  padding: 6rem clamp(2rem, 5vw, 6rem) 5rem;
+  border-top-left-radius: 40px;
+  border-top-right-radius: 40px;
+  z-index: 10;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.amsaii-home .footer-cabin-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 4rem;
+  position: relative;
+}
+
+/* Côté gauche */
+.amsaii-home .footer-left-col {
+  max-width: 480px;
+}
+
+.amsaii-home .footer-brand {
+  font-family: var(--font-family-heading, serif);
+  font-size: 2rem;
+  font-weight: 500;
+  color: #FFFFFF;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+}
+
+.amsaii-home .footer-huge-title {
+  font-family: var(--font-family-heading, serif);
+  font-size: clamp(3rem, 5vw, 5.5rem);
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: #E2E0D8;
+  margin: 0 0 2rem 0;
+}
+
+.amsaii-home .footer-desc {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 360px;
+}
+
+/* Flèche décorative centrale */
+.amsaii-home .footer-arrow-decoration {
+  position: absolute;
+  left: 40%;
+  bottom: 32%;
+  pointer-events: none;
+}
+/* Colonnes de droite */
+.amsaii-home .footer-right-columns {
+  display: flex;
+  gap: 4rem;
+}
+
+.amsaii-home .footer-group-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #FFFFFF;
+  margin-bottom: 1.5rem;
+}
+
+.amsaii-home .footer-links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.amsaii-home .footer-link {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.amsaii-home .footer-link:hover,
+.amsaii-home .footer-link.active {
+  color: #C4924A; /* Couleur dorée active similaire à la maquette */
+}
+
+.amsaii-home .footer-link.highlight {
+  color: #C4924A;
+  font-weight: 500;
+}
+
+/* Responsive (Tablettes et Mobiles) */
+@media (max-width: 1024px) {
+  .amsaii-home .footer-cabin-container {
+    flex-direction: column;
+    gap: 3rem;
+  }
+  .amsaii-home .footer-arrow-decoration {
+    display: none;
+  }
+  .amsaii-home .footer-right-columns {
+    width: 100%;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .amsaii-home .footer-right-columns {
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+}
+/* Flèche pointillée décorative sur la photo */
+.amsaii-home .contact-arrow-decoration {
+  position: absolute;
+  top: 45%;
+  left: 38%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.amsaii-home .contact-arrow-decoration path {
+  stroke-dasharray: 300;
+  stroke-dashoffset: 0;   /* visible par défaut */
+}
+
+.amsaii-home .contact-arrow-decoration.reveal-ready path {
+  stroke-dashoffset: 300;  /* invisible seulement si le JS a pu s'exécuter */
+  animation: drawContactArrow 1.6s ease-out forwards;
+}
+
+@keyframes drawContactArrow {
+  to { stroke-dashoffset: 0; }
+}
+/* Badge "Call Us Today" qui déborde en bas de la carte */
+.amsaii-home .contact-call-badge {
+  position: absolute;
+  left: 50%;
+  bottom: -28px;
+  transform: translateX(-50%);
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: #FFFFFF;
+  padding: 0.7rem 1.5rem 0.7rem 0.7rem;
+  border-radius: 9999px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.amsaii-home .contact-call-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.amsaii-home .contact-call-text {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.9rem;
+  color: #1A1A1A;
+  white-space: nowrap;
+}
+
+.amsaii-home .contact-call-text strong {
+  font-weight: 700;
+}
+
+/* Animation d'écriture : mots qui apparaissent un par un, avec filet de sécurité */
+.amsaii-home .contact-title {
+  overflow: hidden;
+}
+
+.amsaii-home .contact-title .word {
+  display: inline-block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.amsaii-home .contact-title.reveal-ready .word {
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.amsaii-home .contact-title.reveal-ready.is-visible .word {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.amsaii-home .contact-title.reveal-ready .word:nth-child(1) { transition-delay: 0s; }
+.amsaii-home .contact-title.reveal-ready .word:nth-child(2) { transition-delay: 0.08s; }
+.amsaii-home .contact-title.reveal-ready .word:nth-child(3) { transition-delay: 0.16s; }
+/* La carte a besoin de marge en bas pour laisser la place au badge qui déborde */
+.amsaii-home .contact-container {
+  margin-bottom: 2rem;
+}
+/* =========================================================
+   PAGE CHECK-IN — DESIGN AMSAII
+   ========================================================= */
+
+.amsaii-checkin {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: #FDFBF7;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Texture de fond subtile (logement flouté) */
+.amsaii-checkin::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+  opacity: 0.05;
+  filter: blur(3px) saturate(0.8);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Header fixe */
+.amsaii-checkin .checkin-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 clamp(1.5rem, 4vw, 4rem);
+  z-index: 100;
+  background: rgba(253, 251, 247, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.amsaii-checkin .checkin-logo {
+  font-family: var(--font-family-heading, 'Cormorant Garamond', Georgia, serif);
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1A1A1A;
+  letter-spacing: -0.01em;
+}
+
+.amsaii-checkin .checkin-back {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #66635D;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  padding: 0.5rem;
+}
+
+.amsaii-checkin .checkin-back:hover {
+  color: #1A1A1A;
+}
+
+/* Contenu central */
+.amsaii-checkin .checkin-main {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 2rem 4rem;
+}
+
+/* Progression */
+.amsaii-checkin .checkin-progress {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2.5rem;
+}
+
+.amsaii-checkin .step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.amsaii-checkin .step-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.amsaii-checkin .step-item.active .step-circle {
+  background-color: #1A1A1A;
+  color: #FFFFFF;
+  box-shadow: 0 4px 15px rgba(26, 26, 26, 0.2);
+}
+
+.amsaii-checkin .step-item.completed .step-circle {
+  background-color: #C4924A;
+  color: #FFFFFF;
+}
+
+.amsaii-checkin .step-item.pending .step-circle {
+  background-color: #F0EDE6;
+  color: #A8A39A;
+}
+
+.amsaii-checkin .step-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 600;
+  color: #A8A39A;
+  transition: color 0.3s ease;
+}
+
+.amsaii-checkin .step-item.active .step-label {
+  color: #1A1A1A;
+}
+
+.amsaii-checkin .step-item.completed .step-label {
+  color: #C4924A;
+}
+
+.amsaii-checkin .step-line {
+  width: 60px;
+  height: 2px;
+  background-color: #E8E4DE;
+  margin: 0 0.75rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.amsaii-checkin .step-line::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0%;
+  background-color: #C4924A;
+  transition: width 0.6s ease;
+}
+
+.amsaii-checkin .step-line.completed::after {
+  width: 100%;
+}
+
+/* Carte formulaire */
+.amsaii-checkin .checkin-card {
+  background-color: #FFFFFF;
+  width: 100%;
+  max-width: 520px;
+  padding: 3.5rem 3rem;
+  border-radius: 40px;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.07), 0 10px 30px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  animation: checkinCardEnter 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes checkinCardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.amsaii-checkin .checkin-card-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.amsaii-checkin .checkin-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: #C4924A;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.amsaii-checkin .checkin-card-title {
+  font-family: var(--font-family-heading, 'Cormorant Garamond', Georgia, serif);
+  font-size: 2.6rem;
+  font-weight: 300;
+  color: #1A1A1A;
+  margin: 0 0 0.75rem;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.amsaii-checkin .checkin-card-subtitle {
+  font-size: 0.95rem;
+  color: #8C8C8C;
+  font-weight: 300;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Formulaire */
+.amsaii-checkin .checkin-form-group {
+  margin-bottom: 1.5rem;
+}
+
+.amsaii-checkin .checkin-label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #66635D;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+
+.amsaii-checkin .checkin-input-wrap {
+  position: relative;
+}
+
+.amsaii-checkin .checkin-input-icon {
+  position: absolute;
+  left: 1.1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: #A8A39A;
+  stroke-width: 1.5;
+  transition: color 0.3s ease;
+  pointer-events: none;
+}
+
+.amsaii-checkin .checkin-input-wrap:focus-within .checkin-input-icon {
+  color: #1A1A1A;
+}
+
+.amsaii-checkin .checkin-input {
+  width: 100%;
+  padding: 1rem 1rem 1rem 3rem;
+  border: 1.5px solid #E8E4DE;
+  border-radius: 16px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.95rem;
+  background-color: #FAF9F6;
+  color: #1A1A1A;
+  outline: none;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.amsaii-checkin .checkin-input::placeholder {
+  color: #B5B0A6;
+}
+
+.amsaii-checkin .checkin-input:focus {
+  border-color: #1A1A1A;
+  background-color: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(26, 26, 26, 0.04);
+}
+
+/* Bouton */
+.amsaii-checkin .checkin-btn {
+  width: 100%;
+  padding: 1.1rem;
+  background-color: #1A1A1A;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 9999px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 8px 25px rgba(26, 26, 26, 0.15);
+}
+
+.amsaii-checkin .checkin-btn:hover {
+  background-color: #C4924A;
+  color: #1A1A1A;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(196, 146, 74, 0.25);
+}
+
+.amsaii-checkin .checkin-btn:hover svg {
+  transform: translateX(3px);
+}
+
+.amsaii-checkin .checkin-btn svg {
+  transition: transform 0.3s ease;
+}
+
+/* Note footer */
+.amsaii-checkin .checkin-footer-note {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.75rem;
+  color: #B5B0A6;
+  line-height: 1.6;
+}
+
+.amsaii-checkin .checkin-footer-note a {
+  color: #1A1A1A;
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.amsaii-checkin .checkin-footer-note a:hover {
+  border-bottom-color: #1A1A1A;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .amsaii-checkin .checkin-header {
+    height: 70px;
+    padding: 0 1.5rem;
+  }
+
+  .amsaii-checkin .checkin-main {
+    padding: 100px 1rem 3rem;
+  }
+
+  .amsaii-checkin .checkin-card {
+    padding: 2.5rem 1.75rem;
+    border-radius: 32px;
+  }
+
+  .amsaii-checkin .checkin-card-title {
+    font-size: 2.1rem;
+  }
+
+  .amsaii-checkin .step-line {
+    width: 30px;
+  }
+
+  .amsaii-checkin .checkin-progress {
+    margin-bottom: 2rem;
+  }
+}
+.logo {
+  height: 120px;
+  width: auto;
+  display: block;
+}
+
+.footer-brand-logo {
+  height: 100px;
+  width: auto;
+  display: block;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   FLOW CHECK-IN & UPLOAD — DESIGN AMSAII UNIFIÉ
+   ========================================================= */
+
+.amsaii-checkin,
+.amsaii-upload {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: #FDFBF7;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.amsaii-checkin::before,
+.amsaii-upload::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+  opacity: 0.05;
+  filter: blur(3px) saturate(0.8);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Header */
+.amsaii-checkin .checkin-header,
+.amsaii-upload .checkin-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 clamp(1.5rem, 4vw, 4rem);
+  z-index: 100;
+  background: rgba(253, 251, 247, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.amsaii-checkin .checkin-logo,
+.amsaii-upload .checkin-logo {
+  font-family: var(--font-family-heading, 'Cormorant Garamond', Georgia, serif);
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1A1A1A;
+  letter-spacing: -0.01em;
+}
+
+.amsaii-checkin .checkin-back,
+.amsaii-upload .checkin-back {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #66635D;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  padding: 0.5rem;
+}
+
+.amsaii-checkin .checkin-back:hover,
+.amsaii-upload .checkin-back:hover {
+  color: #1A1A1A;
+}
+
+/* Main */
+.amsaii-checkin .checkin-main,
+.amsaii-upload .checkin-main {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 2rem 4rem;
+}
+
+/* Progression */
+.amsaii-checkin .checkin-progress,
+.amsaii-upload .checkin-progress {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2.5rem;
+}
+
+.amsaii-checkin .step-item,
+.amsaii-upload .step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.amsaii-checkin .step-circle,
+.amsaii-upload .step-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.amsaii-checkin .step-item.completed .step-circle,
+.amsaii-upload .step-item.completed .step-circle {
+  background-color: #C4924A;
+  color: #FFFFFF;
+}
+
+.amsaii-checkin .step-item.active .step-circle,
+.amsaii-upload .step-item.active .step-circle {
+  background-color: #1A1A1A;
+  color: #FFFFFF;
+  box-shadow: 0 4px 15px rgba(26, 26, 26, 0.2);
+}
+
+.amsaii-checkin .step-item.pending .step-circle,
+.amsaii-upload .step-item.pending .step-circle {
+  background-color: #F0EDE6;
+  color: #A8A39A;
+}
+
+.amsaii-checkin .step-label,
+.amsaii-upload .step-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 600;
+  color: #A8A39A;
+  transition: color 0.3s ease;
+}
+
+.amsaii-checkin .step-item.completed .step-label,
+.amsaii-upload .step-item.completed .step-label {
+  color: #C4924A;
+}
+
+.amsaii-checkin .step-item.active .step-label,
+.amsaii-upload .step-item.active .step-label {
+  color: #1A1A1A;
+}
+
+.amsaii-checkin .step-line,
+.amsaii-upload .step-line {
+  width: 60px;
+  height: 2px;
+  background-color: #E8E4DE;
+  margin: 0 0.75rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.amsaii-checkin .step-line::after,
+.amsaii-upload .step-line::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0%;
+  background-color: #C4924A;
+  transition: width 0.6s ease;
+}
+
+.amsaii-checkin .step-line.completed::after,
+.amsaii-upload .step-line.completed::after {
+  width: 100%;
+}
+
+/* Carte */
+.amsaii-checkin .checkin-card,
+.amsaii-upload .checkin-card {
+  background-color: #FFFFFF;
+  width: 100%;
+  max-width: 520px;
+  padding: 3.5rem 3rem;
+  border-radius: 40px;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.07), 0 10px 30px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  animation: checkinCardEnter 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes checkinCardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.amsaii-checkin .checkin-card-header,
+.amsaii-upload .checkin-card-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.amsaii-checkin .checkin-tag,
+.amsaii-upload .checkin-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: #C4924A;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.amsaii-checkin .checkin-card-title,
+.amsaii-upload .checkin-card-title {
+  font-family: var(--font-family-heading, 'Cormorant Garamond', Georgia, serif);
+  font-size: 2.6rem;
+  font-weight: 300;
+  color: #1A1A1A;
+  margin: 0 0 0.75rem;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.amsaii-checkin .checkin-card-subtitle,
+.amsaii-upload .checkin-card-subtitle {
+  font-size: 0.95rem;
+  color: #8C8C8C;
+  font-weight: 300;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Formulaire commun */
+.amsaii-checkin .checkin-form-group,
+.amsaii-upload .upload-group {
+  margin-bottom: 1.5rem;
+}
+
+.amsaii-checkin .checkin-label,
+.amsaii-upload .checkin-label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #66635D;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+
+.amsaii-checkin .checkin-input-wrap,
+.amsaii-upload .checkin-input-wrap {
+  position: relative;
+}
+
+.amsaii-checkin .checkin-input-icon,
+.amsaii-upload .checkin-input-icon {
+  position: absolute;
+  left: 1.1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: #A8A39A;
+  stroke-width: 1.5;
+  transition: color 0.3s ease;
+  pointer-events: none;
+}
+
+.amsaii-checkin .checkin-input-wrap:focus-within .checkin-input-icon,
+.amsaii-upload .checkin-input-wrap:focus-within .checkin-input-icon {
+  color: #1A1A1A;
+}
+
+.amsaii-checkin .checkin-input,
+.amsaii-upload .checkin-input {
+  width: 100%;
+  padding: 1rem 1rem 1rem 3rem;
+  border: 1.5px solid #E8E4DE;
+  border-radius: 16px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.95rem;
+  background-color: #FAF9F6;
+  color: #1A1A1A;
+  outline: none;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.amsaii-checkin .checkin-input::placeholder,
+.amsaii-upload .checkin-input::placeholder {
+  color: #B5B0A6;
+}
+
+.amsaii-checkin .checkin-input:focus,
+.amsaii-upload .checkin-input:focus {
+  border-color: #1A1A1A;
+  background-color: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(26, 26, 26, 0.04);
+}
+
+/* Bouton */
+.amsaii-checkin .checkin-btn,
+.amsaii-upload .checkin-btn {
+  width: 100%;
+  padding: 1.1rem;
+  background-color: #1A1A1A;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 9999px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 8px 25px rgba(26, 26, 26, 0.15);
+}
+
+.amsaii-checkin .checkin-btn:hover,
+.amsaii-upload .checkin-btn:hover {
+  background-color: #C4924A;
+  color: #1A1A1A;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(196, 146, 74, 0.25);
+}
+
+.amsaii-checkin .checkin-btn:hover svg,
+.amsaii-upload .checkin-btn:hover svg {
+  transform: translateX(3px);
+}
+
+.amsaii-checkin .checkin-btn svg,
+.amsaii-upload .checkin-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.amsaii-checkin .checkin-btn:disabled,
+.amsaii-upload .checkin-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Note footer */
+.amsaii-checkin .checkin-footer-note,
+.amsaii-upload .checkin-footer-note {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.75rem;
+  color: #B5B0A6;
+  line-height: 1.6;
+}
+
+.amsaii-checkin .checkin-footer-note a,
+.amsaii-upload .checkin-footer-note a {
+  color: #1A1A1A;
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.amsaii-checkin .checkin-footer-note a:hover,
+.amsaii-upload .checkin-footer-note a:hover {
+  border-bottom-color: #1A1A1A;
+}
+
+/* =========================================================
+   STYLES SPÉCIFIQUES — UPLOAD (DocumentUpload)
+   ========================================================= */
+
+/* Toggle CIN / Passeport */
+.amsaii-upload .upload-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.amsaii-upload .toggle-btn {
+  padding: 0.9rem 0.5rem;
+  border-radius: 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid #E8E4DE;
+  background-color: #FAF9F6;
+  color: #66635D;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  text-align: center;
+}
+
+.amsaii-upload .toggle-btn:hover {
+  border-color: #1A1A1A;
+}
+
+.amsaii-upload .toggle-btn.active {
+  background-color: #1A1A1A;
+  color: #FFFFFF;
+  border-color: #1A1A1A;
+  box-shadow: 0 4px 15px rgba(26, 26, 26, 0.15);
+}
+
+/* Zone d'upload */
+.amsaii-upload .upload-zone {
+  border: 2px dashed #E8E4DE;
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #FAF9F6;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.amsaii-upload .upload-zone:hover {
+  border-color: #1A1A1A;
+  background-color: #FFFFFF;
+}
+
+.amsaii-upload .upload-zone.has-file {
+  border-style: solid;
+  border-color: #1A1A1A;
+  background-color: #FFFFFF;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+}
+
+.amsaii-upload .upload-zone-icon {
+  width: 32px;
+  height: 32px;
+  color: #A8A39A;
+  stroke-width: 1.5;
+  margin-bottom: 0.25rem;
+}
+
+.amsaii-upload .upload-zone-text {
+  font-size: 0.9rem;
+  color: #66635D;
+  font-weight: 500;
+}
+
+.amsaii-upload .upload-zone-hint {
+  font-size: 0.75rem;
+  color: #A8A39A;
+  font-weight: 300;
+}
+
+/* Fichier sélectionné */
+.amsaii-upload .upload-file-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+}
+
+.amsaii-upload .upload-file-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1A1A1A;
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.amsaii-upload .upload-file-size {
+  font-size: 0.75rem;
+  color: #A8A39A;
+  font-weight: 400;
+}
+
+.amsaii-upload .upload-file-remove {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #F0EDE6;
+  color: #66635D;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.amsaii-upload .upload-file-remove:hover {
+  background-color: #1A1A1A;
+  color: #FFFFFF;
+}
+
+/* Spinner loading */
+.amsaii-upload .upload-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #FFFFFF;
+  border-radius: 50%;
+  animation: uploadSpin 0.8s linear infinite;
+}
+
+.amsaii-upload .checkin-btn:hover .upload-spinner {
+  border-color: rgba(26, 26, 26, 0.2);
+  border-top-color: #1A1A1A;
+}
+
+@keyframes uploadSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .amsaii-checkin .checkin-header,
+  .amsaii-upload .checkin-header {
+    height: 70px;
+    padding: 0 1.5rem;
+  }
+
+  .amsaii-checkin .checkin-main,
+  .amsaii-upload .checkin-main {
+    padding: 100px 1rem 3rem;
+  }
+
+  .amsaii-checkin .checkin-card,
+  .amsaii-upload .checkin-card {
+    padding: 2.5rem 1.75rem;
+    border-radius: 32px;
+  }
+
+  .amsaii-checkin .checkin-card-title,
+  .amsaii-upload .checkin-card-title {
+    font-size: 2.1rem;
+  }
+
+  .amsaii-checkin .step-line,
+  .amsaii-upload .step-line {
+    width: 30px;
+  }
+
+  .amsaii-upload .upload-zone {
+    padding: 2rem 1.5rem;
+  }
+
+  .amsaii-upload .upload-zone.has-file {
+    padding: 1rem 1.25rem;
+  }
+
+  .amsaii-upload .upload-file-name {
+    max-width: 180px;
+  }
+}
+
+/* Classes personnalisées pour le formulaire de connexion */
+.amsaii-login-container {
+  min-height: 100vh;
+  background-color: #FDFBF7;
+  color: #1A1A1A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.amsaii-login-card {
+  max-width: 28rem;
+  width: 100%;
+  background: #FFFFFF;
+  padding: 2rem;
+  border-radius: 24px;
+  border: 1px solid #E8E4DE;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.amsaii-input {
+  width: 100%;
+  background-color: #FAF9F6;
+  border: 1px solid #E8E4DE;
+  border-radius: 0.75rem;
+  padding: 0.625rem 1rem 0.625rem 2.5rem;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.amsaii-input:focus {
+  border-color: #1A1A1A;
+}
+
+.amsaii-btn-primary {
+  width: 100%;
+  background-color: #1A1A1A;
+  color: #FDFBF7;
+  padding: 0.875rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.amsaii-btn-primary:hover {
+  background-color: #C5A880;
+  color: #1A1A1A;
+}
+
+/* Structure globale du Dashboard */
+.amsaii-dashboard {
+  display: flex;
+  min-height: 100vh;
+  background-color: #FDFBF7;
+  color: #1A1A1A;
+}
+
+.amsaii-sidebar {
+  width: 16rem;
+  background-color: #FFFFFF;
+  border-right: 1px solid #E8E4DE;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+}
+
+.amsaii-main-content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.amsaii-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.amsaii-card-stat {
+  background: #FFFFFF;
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 1px solid #E8E4DE;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.amsaii-table-container {
+  background: #FFFFFF;
+  border-radius: 16px;
+  border: 1px solid #E8E4DE;
+  overflow: hidden;
+}
+
+.amsaii-table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+.amsaii-table th {
+  background-color: #FAF9F6;
+  padding: 1rem 1.5rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #8C8C8C;
+  border-bottom: 1px solid #E8E4DE;
+}
+
+.amsaii-table td {
+  padding: 1rem 1.5rem;
+  font-size: 0.875rem;
+  border-bottom: 1px solid #F0ECE6;
+}
+
+/* Léger mouvement continu pour attirer l'œil vers le scroll */
+.amsaii-home .scroll-down-wrapper {
+  animation: scrollBounce 2.4s ease-in-out infinite;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(10px); }
+}
+
+.amsaii-home .scroll-down-wrapper:hover {
+  animation-play-state: paused;
+}
+
+
+/* =========================================================
+   PAGE ABOUT — DESIGN "CABIN"
+   ========================================================= */
+
+.about-hero-content {
+  max-width: clamp(300px, 40vw, 480px);
+}
+
+.about-hero-title {
+  font-size: clamp(3.5rem, 9vw, 9rem);
+}
+
+.about-hero-badge {
+  position: absolute;
+  right: clamp(1.5rem, 5vw, 5rem);
+  bottom: clamp(9rem, 14vh, 12rem);
+  z-index: 10;
+  background-color: #1A1A1A;
+  color: #FFFFFF;
+  padding: 1.25rem 1.5rem;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 220px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.about-hero-badge.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.about-hero-badge-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #C4924A;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.about-hero-badge-text {
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.4;
+}
+
+@media (max-width: 968px) {
+  .about-hero-badge { display: none; }
+}
+
+/* Intro + flèche pointillée + cartes */
+.about-intro-section {
+  position: relative;
+  background-color: #f8f7f3;
+  border-top-left-radius: 60px;
+  border-top-right-radius: 60px;
+  z-index: 10;
+  padding: 7rem clamp(1.5rem, 6vw, 6rem) 6rem;
+  box-shadow: 0 -25px 50px rgba(0, 0, 0, 0.35);
+}
+
+.about-intro-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+}
+/* =========================================================
+   FLÈCHE INTRO — IDENTIQUE À LA MAQUETTE
+   ========================================================= */
+/* =========================================================
+   FLECHE INTRO
+   ========================================================= */
+
+.about-intro-inner {
+  position: relative;
+}
+
+.about-dashed-arrow {
+  position: absolute;
+  left: -65px;
+  top: 63px;
+
+  width: 150px;
+  height: 220px;
+
+  z-index: 50;
+  pointer-events: none;
+
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.about-dashed-arrow svg {
+  display: block;
+  width: 150px;
+  height: 220px;
+  overflow: visible;
+}
+
+.about-dashed-arrow-path {
+  fill: none;
+  stroke: #C9C9C5;
+  stroke-width: 3.5;
+  stroke-dasharray: 13 12;
+  stroke-dashoffset: 0;
+  stroke-linecap: round;
+}
+
+.about-dashed-arrow-head {
+  fill: none;
+  stroke: #C9C9C5;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 1;
+}
+
+@media (max-width: 900px) {
+  .about-dashed-arrow {
+    display: none;
+  }
+}
+
+.about-dashed-arrow.is-visible .about-dashed-arrow-head {
+  opacity: 1;
+}
+
+@media (max-width: 900px) {
+  .about-dashed-arrow { display: none; }
+}
+.about-intro-tag {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: #8C8C8C;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.about-intro-quote {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.8rem, 3.4vw, 2.8rem);
+  font-weight: 400;
+  color: #1A1A1A;
+  line-height: 1.4;
+  max-width: 780px;
+  margin: 0 auto 4.5rem;
+}
+
+.about-photo-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  text-align: left;
+}
+
+.about-photo-card-img {
+  border-radius: 20px;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  margin-bottom: 1.25rem;
+}
+
+.about-photo-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.about-photo-card:hover .about-photo-card-img img {
+  transform: scale(1.05);
+}
+
+.about-photo-card h3 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #1A1A1A;
+  margin: 0 0 0.5rem;
+}
+
+.about-photo-card p {
+  font-size: 0.875rem;
+  font-weight: 300;
+  color: #66635D;
+  line-height: 1.6;
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .about-photo-cards { grid-template-columns: 1fr; }
+  .about-dashed-arrow { display: none; }
+}
+
+/* Philosophy — section sombre */
+.about-philosophy-section {
+  background-color: #FDFBF7;
+  padding: 0 clamp(1.5rem, 6vw, 6rem) 7rem;
+  position: relative;
+  z-index: 10;
+}
+
+.about-philosophy-card {
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #1A1A1A;
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  padding: 3rem;
+  overflow: hidden;
+}
+
+.about-philosophy-img {
+  flex: 1 1 40%;
+  border-radius: 28px;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+}
+
+.about-philosophy-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-philosophy-text {
+  flex: 1 1 60%;
+}
+
+.about-philosophy-tag {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: #A8A39A;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.about-philosophy-quote {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 400;
+  color: #FFFFFF;
+  line-height: 1.4;
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .about-philosophy-card { flex-direction: column; padding: 2rem; border-radius: 28px; }
+  .about-philosophy-img { width: 100%; aspect-ratio: 4/3; }
+}
+
+/* Réutilise .feature-row de Home ; ajoute juste la liste "Inclus" */
+.about-includes-list {
+  list-style: none;
+  margin: 1.75rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.about-includes-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #A8A39A;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.about-includes-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: #55524C;
+  font-weight: 300;
+}
+
+.about-includes-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #F4F1EA;
+  color: #1A1A1A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Highlight avec soulignement animé */
+.about-highlight-section {
+  background-color: #FDFBF7;
+  padding: 2rem clamp(1.5rem, 6vw, 6rem) 7rem;
+  position: relative;
+  z-index: 10;
+}
+
+.about-highlight-row {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+}
+
+.about-highlight-img {
+  flex: 1 1 45%;
+  border-radius: 32px;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+}
+
+.about-highlight-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-highlight-content {
+  flex: 1 1 55%;
+}
+
+.about-highlight-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background-color: #F4F1EA;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  color: #1A1A1A;
+}
+
+.about-highlight-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 400;
+  color: #1A1A1A;
+  line-height: 1.4;
+  margin: 0 0 1.25rem;
+  max-width: 480px;
+}
+
+.about-highlight-underline {
+  height: 2px;
+  width: 0;
+  background-color: #C4924A;
+  transition: width 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
+}
+
+.about-highlight-row.is-visible .about-highlight-underline {
+  width: 100%;
+  max-width: 480px;
+}
+
+@media (max-width: 900px) {
+  .about-highlight-row { flex-direction: column; gap: 2.5rem; }
+  .about-highlight-img, .about-highlight-content { width: 100%; }
+}
+
+/* Avis Airbnb */
+.about-reviews-section {
+  background-color: #f8f7f3;
+  padding: 7rem clamp(1.5rem, 6vw, 6rem);
+  position: relative;
+  z-index: 10;
+}
+
+.about-reviews-header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 4rem;
+}
+
+.about-reviews-container {
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #FFFFFF;
+  border-radius: 32px;
+  padding: 3rem;
+  display: flex;
+  gap: 3.5rem;
+  align-items: center;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
+}
+
+.about-reviews-score {
+  flex: 0 0 auto;
+  text-align: center;
+  padding-right: 3rem;
+  border-right: 1px solid #E8E4DE;
+}
+
+.about-reviews-score-number {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 4rem;
+  font-weight: 500;
+  color: #1A1A1A;
+  line-height: 1;
+}
+
+.about-reviews-score-stars {
+  display: flex;
+  gap: 0.15rem;
+  justify-content: center;
+  color: #C4924A;
+  margin: 0.75rem 0;
+}
+
+.about-reviews-score-count {
+  font-size: 0.8rem;
+  color: #8C8C8C;
+  white-space: nowrap;
+  margin: 0;
+}
+
+.about-reviews-categories {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem 2rem;
+}
+
+.about-reviews-category-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #1A1A1A;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+}
+
+.about-reviews-bar {
+  height: 4px;
+  background-color: #EFEBE3;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.about-reviews-bar-fill {
+  height: 100%;
+  background-color: #C4924A;
+  border-radius: 4px;
+}
+
+.about-reviews-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+@media (max-width: 768px) {
+  .about-reviews-container { flex-direction: column; }
+  .about-reviews-score { border-right: none; border-bottom: 1px solid #E8E4DE; padding: 0 0 2rem; }
+  .about-reviews-categories { grid-template-columns: 1fr; }
+}
+
+/* CTA sombre avec images */
+.about-cta-section {
+  background-color: #1A1A1A;
+  padding: 7rem clamp(1.5rem, 6vw, 6rem);
+  position: relative;
+  z-index: 10;
+  text-align: center;
+}
+
+.about-cta-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  font-weight: 300;
+  color: #FFFFFF;
+  line-height: 1.4;
+  max-width: 900px;
+  margin: 0 auto 4rem;
+}
+
+.about-cta-images {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.about-cta-image {
+  flex: 1;
+  border-radius: 20px;
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  transition: transform 0.4s ease;
+}
+
+.about-cta-image--left { transform: rotate(-4deg) translateY(10px); }
+.about-cta-image--right { transform: rotate(4deg) translateY(10px); }
+
+.about-cta-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .about-cta-images { display: none; }
+}
+
+/* Newsletter sombre */
+.about-subscribe-section {
+  background-color: #1A1A1A;
+  padding: 0 clamp(1.5rem, 6vw, 6rem) 7rem;
+  position: relative;
+  z-index: 10;
+}
+
+.about-subscribe-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  background-color: #232323;
+  border-radius: 40px;
+  padding: 3rem;
+  overflow: hidden;
+}
+
+.about-subscribe-img {
+  flex: 1 1 40%;
+  border-radius: 28px;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+}
+
+.about-subscribe-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-subscribe-content {
+  flex: 1 1 60%;
+}
+
+.about-subscribe-content h2 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 400;
+  color: #FFFFFF;
+  margin: 0 0 0.75rem;
+}
+
+.about-subscribe-content p {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 1.75rem;
+  max-width: 420px;
+}
+
+.about-subscribe-form {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.about-subscribe-form input {
+  flex: 1 1 160px;
+  padding: 0.9rem 1.25rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #FFFFFF;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.about-subscribe-form input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.about-subscribe-form button {
+  padding: 0.9rem 1.75rem;
+  border-radius: 9999px;
+  background-color: #C4924A;
+  color: #1A1A1A;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.about-subscribe-form button:hover {
+  background-color: #d9a758;
+}
+
+@media (max-width: 900px) {
+  .about-subscribe-container { flex-direction: column; padding: 2rem; }
+  .about-subscribe-img { width: 100%; aspect-ratio: 16/9; }
+}
+
+.about-reviews-score-block {
+  max-width: 900px;
+  margin: 0 auto 3rem;
+  background-color: #FFFFFF;
+  border-radius: 32px;
+  padding: 3rem;
+  display: flex;
+  gap: 3.5rem;
+  align-items: center;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
+}
+
+.about-reviews-score {
+  flex: 0 0 auto;
+  text-align: center;
+  padding-right: 3rem;
+  border-right: 1px solid #E8E4DE;
+}
+
+.about-reviews-score-number {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 4rem;
+  font-weight: 500;
+  color: #1A1A1A;
+  line-height: 1;
+}
+
+.about-reviews-score-stars {
+  display: flex;
+  gap: 0.15rem;
+  justify-content: center;
+  color: #C4924A;
+  margin: 0.75rem 0;
+}
+
+.about-reviews-score-count {
+  font-size: 0.8rem;
+  color: #8C8C8C;
+  white-space: nowrap;
+  margin: 0;
+}
+
+.about-reviews-categories {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem 2rem;
+}
+
+.about-reviews-category-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #1A1A1A;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+}
+
+.about-reviews-bar {
+  height: 4px;
+  background-color: #EFEBE3;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.about-reviews-bar-fill {
+  height: 100%;
+  background-color: #C4924A;
+  border-radius: 4px;
+}
+
+/* Tags thématiques réels */
+.about-reviews-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  max-width: 900px;
+  margin: 0 auto 3.5rem;
+}
+
+.about-reviews-tag {
+  background-color: #FFFFFF;
+  border: 1px solid #E8E4DE;
+  color: #55524C;
+  font-size: 0.8rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+}
+
+.about-reviews-tag strong {
+  color: #C4924A;
+  margin-left: 0.35rem;
+}
+
+/* Cartes d'avis individuels */
+.about-reviews-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.about-review-card {
+  background-color: #FFFFFF;
+  border-radius: 24px;
+  padding: 2rem;
+  border: 1px solid #E8E4DE;
+}
+
+.about-review-card-stars {
+  display: flex;
+  gap: 0.15rem;
+  color: #C4924A;
+  margin-bottom: 1rem;
+}
+
+.about-review-card-text {
+  font-size: 0.9rem;
+  color: #55524C;
+  line-height: 1.6;
+  font-style: italic;
+  margin: 0 0 1.5rem;
+}
+
+.about-review-card-author {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.about-review-card-name {
+  font-weight: 600;
+  color: #1A1A1A;
+  font-size: 0.9rem;
+}
+
+.about-review-card-date {
+  font-size: 0.75rem;
+  color: #A8A39A;
+}
+
+.about-reviews-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+@media (max-width: 900px) {
+  .about-reviews-score-block { flex-direction: column; padding: 2rem; }
+  .about-reviews-score { border-right: none; border-bottom: 1px solid #E8E4DE; padding: 0 0 2rem; width: 100%; }
+  .about-reviews-categories { grid-template-columns: 1fr; width: 100%; }
+  .about-reviews-cards { grid-template-columns: 1fr; }
+}
+
+/* =========================================================
+   PAGE CONTACT — DESIGN "CABIN"
+   ========================================================= */
+
+.contact-panel-section {
+  position: relative;
+  background-color: #FDFBF7;
+  border-top-left-radius: 60px;
+  border-top-right-radius: 60px;
+  z-index: 10;
+  padding: 6rem clamp(1.5rem, 6vw, 6rem) 7rem;
+  box-shadow: 0 -25px 50px rgba(0, 0, 0, 0.35);
+}
+
+.contact-panel-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+}
+
+/* Colonne gauche : infos */
+.contact-info-thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.contact-info-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.contact-info-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.2rem, 3.5vw, 3rem);
+  font-weight: 400;
+  color: #1A1A1A;
+  line-height: 1.15;
+  margin: 0 0 1.25rem;
+}
+
+.contact-info-subtitle {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: #66635D;
+  line-height: 1.6;
+  margin: 0 0 2.5rem;
+  max-width: 420px;
+}
+
+.contact-info-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-info-item {
+  padding: 1.75rem 0;
+  border-top: 1px solid #E8E4DE;
+}
+
+.contact-info-item:last-child {
+  border-bottom: 1px solid #E8E4DE;
+}
+
+.contact-info-item-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+}
+
+.contact-info-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #F4F1EA;
+  color: #1A1A1A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.contact-info-item-header h3 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #1A1A1A;
+  margin: 0;
+}
+
+.contact-info-line {
+  font-size: 0.9rem;
+  color: #66635D;
+  font-weight: 300;
+  margin: 0;
+  padding-left: calc(38px + 0.75rem);
+}
+
+/* Colonne droite : formulaire */
+.contact-form-heading {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.2rem, 3.5vw, 3rem);
+  font-weight: 400;
+  color: #1A1A1A;
+  margin: 0 0 0.5rem;
+}
+
+.contact-form-subheading {
+  font-size: 0.9rem;
+  color: #8C8C8C;
+  font-weight: 300;
+  margin: 0 0 2rem;
+}
+
+.contact-panel-form-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.contact-panel-form input,
+.contact-panel-form select,
+.contact-panel-form textarea {
+  width: 100%;
+  padding: 16px 20px;
+  border: 1.5px solid #E8E4DE;
+  border-radius: 16px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.9rem;
+  background-color: #FAF9F6;
+  color: #1A1A1A;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.contact-panel-form input::placeholder,
+.contact-panel-form textarea::placeholder,
+.contact-panel-form select:invalid {
+  color: #A8A39A;
+}
+
+.contact-panel-form input:focus,
+.contact-panel-form select:focus,
+.contact-panel-form textarea:focus {
+  border-color: #1A1A1A;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.05);
+}
+
+.contact-panel-form textarea {
+  resize: vertical;
+  min-height: 130px;
+}
+
+.contact-panel-submit {
+  width: 100%;
+  padding: 17px;
+  background-color: #1A1A1A;
+  color: #ffffff;
+  border: none;
+  border-radius: 16px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 0.5rem 0 1rem;
+}
+
+.contact-panel-submit:hover {
+  background-color: #C4924A;
+  color: #1A1A1A;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(196, 146, 74, 0.25);
+}
+
+.contact-panel-terms {
+  font-size: 0.75rem;
+  text-align: center;
+  color: #A8A39A;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.contact-form-success {
+  background-color: #F0F7F2;
+  border: 1px solid #C9E4D3;
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.contact-form-success p {
+  color: #2F7A5C;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .contact-panel-inner {
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+  }
+  .contact-panel-form-row {
+    flex-direction: column;
+  }
+}
+/* =========================================================
+   ANIMATIONS PREMIUM — GSAP ScrollTrigger
+   (empêche un flash de contenu visible avant l'animation JS)
+   ========================================================= */
+.reveal,
+.reveal-stagger > *,
+.feature-content,
+.feature-image-wrap,
+.contact-info-col,
+.contact-form-col,
+.about-philosophy-img,
+.about-philosophy-text,
+.about-highlight-img,
+.about-subscribe-img,
+.about-subscribe-content {
+  will-change: transform, opacity, clip-path;
+}
+
+/* Si JavaScript est désactivé, tout reste visible (pas de contenu caché) */
+.no-js .reveal,
+.no-js .reveal-stagger > * {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.brand-definition {
+  display: flex;
+  align-items: center;
+  gap: clamp(2.5rem, 5vw, 4rem);
+  max-width: 900px;
+  margin: 0 auto 5rem auto;
+  text-align: left;
+}
+
+.brand-definition-image {
+  flex: 1 1 42%;
+  border-radius: 32px;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
+}
+
+.brand-definition-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.brand-definition-image:hover img {
+  transform: scale(1.04);
+}
+
+.brand-definition-content {
+  flex: 1 1 58%;
+}
+
+.brand-definition-meaning {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+  font-weight: 400;
+  color: #1A1A1A;
+  line-height: 1.35;
+  margin: 0 0 1.25rem 0;
+}
+
+.brand-definition-meaning strong {
+  color: #C4924A;
+  font-style: italic;
+}
+
+.brand-definition-desc {
+  font-size: 0.95rem;
+  color: #66635D;
+  font-weight: 300;
+  line-height: 1.7;
+  margin: 0;
+  max-width: 400px;
+}
+
+@media (max-width: 900px) {
+  .brand-definition {
+    flex-direction: column;
+    text-align: center;
+  }
+  .brand-definition-image,
+  .brand-definition-content {
+    width: 100%;
+  }
+  .brand-definition-desc {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+}
+
+/* ==========================================================================
+   BURGER MENU MOBILE
+   ========================================================================== */
+
+.burger-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #1A1A1A;
+  padding: 0.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 968px) {
+  .burger-btn {
+    display: flex;
+  }
+  .amsaii-home .header-btn {
+    display: none; /* le CTA passe dans le menu mobile */
+  }
+}
+
+.mobile-menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background-color: #FDFBF7;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem clamp(1.5rem, 6vw, 3rem) 2.5rem;
+  transform: translateX(100%);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  visibility: hidden;
+}
+
+.mobile-menu-overlay.is-open {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+.mobile-menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 3rem;
+}
+
+.mobile-menu-logo {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1A1A1A;
+  letter-spacing: -0.01em;
+}
+
+.mobile-menu-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #1A1A1A;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-menu-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.mobile-menu-link {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 2.4rem;
+  font-weight: 300;
+  color: #1A1A1A;
+  text-decoration: none;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #E8E4DE;
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.mobile-menu-overlay.is-open .mobile-menu-link {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mobile-menu-cta {
+  width: 100%;
+  padding: 1.1rem;
+  background-color: #1A1A1A;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 9999px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 2rem;
+  transition: background-color 0.3s ease;
+}
+
+.mobile-menu-cta:hover {
+  background-color: #C4924A;
+  color: #1A1A1A;
+}
+
+.mobile-menu-logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.mobile-menu-logo-img {
+  height: 100px;
+  width: auto;
+  display: block;
+}
+.amsaii-home .footer-brand {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+}
+
+.amsaii-home .footer-brand-logo {
+  height: 100px;
+  width: auto;
+  display: block;
+  /* filtre blanc pour rester visible sur le fond sombre du footer */
+  filter: brightness(0) invert(1);
+}
