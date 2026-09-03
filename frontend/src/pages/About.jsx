@@ -182,7 +182,7 @@ export default function About() {
         <div className="about-photo-card-img">
             <img src={amsaii} alt="AMSAII" />
         </div>
-        <h3>Amsaï</h3>
+        <h3>AMSAII</h3>
         <p>Nom Amazigh signifiant <strong>élégance</strong> — un mot qui incarne le raffinement et l'art de recevoir à la marocaine.</p>
     </div>
     <div className="about-photo-card">
