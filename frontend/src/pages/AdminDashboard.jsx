@@ -156,7 +156,7 @@ export default function AdminDashboard() {
           <header className="flex justify-between items-center mb-10 pb-6 border-b border-[#E8E4DE]/70">
             <div className="flex items-center gap-4">
               <div style={{ height: 45, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <img src={amsaiiLogo} alt="AMSAII Logo" className="logo" />
+                <img src={amsaiiLogo} alt="AMSAII Logo" style={{ height: '100%', width: 'auto' }} />
               </div>
 
               <div>
